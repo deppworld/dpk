@@ -1,0 +1,31 @@
+wt_vs_mutant.py - wild-type vs mutant proteins for any gene list
+=================================================================
+
+1. Edit "gene list.txt" (in the protein folder): one mouse gene symbol per line,
+   spelled exactly as in the SnpEff table (e.g. Trp53, Kras, Pik3ca - case matters).
+   Optional: add a transcript after the gene to force it, e.g.
+       Wwtr1 NM_133784.3
+
+2. Install Python 3 once (https://www.python.org/downloads/ - tick "Add Python to PATH").
+   No extra packages are needed.
+
+3. Open a Command Prompt in the protein folder (in File Explorer, type cmd in the
+   address bar and press Enter), then run (one line):
+
+   python scripts\wt_vs_mutant.py --vcf "Galaxy241-[bcftools view on dataset 237].vcf" --wt "Galaxy246-[gffread on dataset 221 and 222_ pep.fa].fasta" --mut "Galaxy245-[gffread on dataset 222 and 243_ pep.fa].fasta" --genes "gene list.txt" --out my_results
+
+   Add  --all-transcripts  to get every isoform instead of one per gene.
+
+4. Results in the my_results folder:
+   <Gene>_WT_vs_mutant.fasta                    wild-type then mutant protein for each gene
+   selected_genes_WT_and_mutant_proteins.fasta   all genes in one file
+   selected_genes_mutation_summary.tsv           table (opens in Excel)
+
+Notes
+- A gene listed as "no protein-changing SNV found" has no HIGH/MODERATE single-base
+  change in this sample.
+- Stop-gained mutations (e.g. C21*) give a shortened mutant protein.
+- Indels/frameshifts are not in the protein FASTA; they appear in the summary as
+  "not in FASTA" and in the Galaxy table (Galaxy239).
+- To see which genes are mutated at all, open Galaxy239-[SnpSift Extract Fields...].tabular
+  in Excel and look at column ANN[0].GENE.
